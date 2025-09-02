@@ -18,6 +18,7 @@ export default function Inventory() {
           return (
             <li key={item.id}>
               {item.Item_Name}, {item.Description}, {item.Quantity}
+              <button className="see-details-button">See Details</button>
             </li>
           );
         })}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { Link } from "react-router";
 
 export default function Login() {
   return (
@@ -20,6 +20,9 @@ export default function Login() {
         <input name="password" type="password" placeholder="Password" />
         <button type="submit">Register</button>
       </form>
+      <Link to="/inventory">
+        <p>Continue as Guest</p>
+      </Link>
     </div>
   );
 }
