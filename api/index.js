@@ -18,9 +18,8 @@ app.get("/", (request, response) => {
 });
 
 app.get("/inventory", (request, response) => {
-  knex("guitar")
+  knex("item")
     .select("*")
-    .from("item")
     .then((data) => response.status(200).json(data))
     .catch((error) => response.status(400).json(error));
 });
@@ -34,23 +33,27 @@ app.get("/inventory/:id", (request, response) => {
 });
 
 app.post("/inventory", (request, response) => {
-  let newItem = request.body;
-  if (!Object.hasOwn(newItem, "Item_Name")) {
-    response.status(400).send("Must provide Item_name property");
+  const { item_name, description, quantity, userid } = request.body;
+
+  if (!item_name || !description || userid == null || quantity == null) {
+    return response.status(400).json({
+      message: "item_name, description, quantity, and userid are required",
+    });
   }
-  if (!Object.hasOwn(newItem, "Description")) {
-    response.status(400).send("Must provide Description property");
+
+  const quant = Number.parseInt(quantity, 10);
+  if (!Number.isInteger(quant) || quant < 0) {
+    return response
+      .status(400)
+      .json({ message: "quantity must be 0 or greater" });
   }
-  if (!Object.hasOwn(newItem, "Quantity")) {
-    response.status(400).send("Must provide Quantity property");
-  }
-  if (!Object.hasOwn(newItem, "UserId")) {
-    response.status(400).send("Must provide UserId property");
-  }
+
+  const newItem = { item_name, description, quantity: quant, userid };
 
   knex("item")
     .insert(newItem)
-    .then((data) => response.status(200).send(data));
+    .then((data) => response.status(201).json({ id: data[0], ...newItem }))
+    .catch((err) => response.status(500).json({ error: err.message }));
 });
 
 app.delete("/inventory/:id", (req, res) => {
@@ -70,4 +73,54 @@ app.patch("/inventory/:id", (req, res) => {
     .then(() => console.log("done with the patch"))
     .then((data) => res.status(200).end())
     .catch((err) => res.status(400).json(err));
+});
+
+app.post("/users/login", (req, res) => {
+  const { username, password } = req.body;
+  knex("users")
+    .where({ username, password })
+    .first()
+    .then((user) => {
+      if (!user)
+        return res.status(401).json({
+          message: "Invalid login",
+        });
+      res.json({
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        username: user.username,
+      });
+    })
+    .catch((err) => res.status(500).json({ error: err.message }));
+});
+
+app.post("/users/register", function (req, res) {
+  const { first_name, last_name, username, password } = req.body;
+  if (!first_name || !last_name || !username || !password) {
+    return res.status(400).json({
+      message: "Please fill in all fields",
+    });
+  }
+  knex("users")
+    .insert({ first_name, last_name, username, password })
+    .returning(["id", "first_name", "last_name", "username"])
+    .then(([newUser]) => {
+      res.json(newUser);
+    })
+    .catch((err) => res.status(500).json({ error: err.message }));
+});
+
+app.get("/myinventory/:userid", (req, res) => {
+  const userId = Number.parseInt(req.params.userid, 10);
+  if (!Number.isInteger(userId)) {
+    return res.status(400).json({ message: "Invalid or missing userId" });
+  }
+
+  knex("item")
+    .select("id", "item_name", "description", "quantity", "userid")
+    .where({ userid: userId })
+    .orderBy("id", "desc")
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(500).json({ error: err.message }));
 });

@@ -5,10 +5,10 @@
 exports.up = function (knex) {
   return knex.schema.createTable("item", (table) => {
     table.increments("id").primary().notNullable();
-    table.integer("UserId").references("users.id").notNullable();
-    table.string("Item_Name").notNullable();
-    table.string("Description").notNullable();
-    table.integer("Quantity").notNullable();
+    table.integer("userid").references("users.id").notNullable();
+    table.string("item_name").notNullable();
+    table.string("description").notNullable();
+    table.integer("quantity").notNullable();
   });
 };
 

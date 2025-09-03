@@ -7,22 +7,22 @@ exports.seed = async function (knex) {
   await knex("item").del();
   await knex("item").insert([
     {
-      UserId: 1,
-      Item_Name: "Electric Guitar",
-      Description: "Gibson",
-      Quantity: 10,
+      userid: 1,
+      item_name: "electric guitar",
+      description: "gibson",
+      quantity: 10,
     },
     {
-      UserId: 2,
-      Item_Name: "Electric Guitar",
-      Description: "Fender",
-      Quantity: 20,
+      userid: 2,
+      item_name: "electric guitar",
+      description: "fender",
+      quantity: 20,
     },
     {
-      UserId: 3,
-      Item_Name: "Acoustic Guitar",
-      Description: "Taylor",
-      Quantity: 30,
+      userid: 3,
+      item_name: "acoustic guitar",
+      description: "taylor",
+      quantity: 30,
     },
   ]);
 };

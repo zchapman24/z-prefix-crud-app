@@ -1,0 +1,19 @@
+.guest-inventory {
+  background-color: #1e1e1e; /* darker than manager view */
+  padding: 20px;
+}
+
+.guest-inventory h1 {
+  font-size: 1.8rem;
+  color: #66d9ef; /* subtle accent */
+}
+
+.guest-inventory li {
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
+
+.guest-inventory .see-details-button {
+  font-size: 0.85rem;
+  color: #66d9ef;
+}
