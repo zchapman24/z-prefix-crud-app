@@ -29,7 +29,6 @@ export default function Login() {
         setIsLoggedIn(true);
         setUsername(data.username);
         setUserId(data.id);
-        alert(`Hey there, ${data.username}!`);
         navigate("/myinventory");
       } else {
         alert(

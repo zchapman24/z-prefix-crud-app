@@ -80,10 +80,6 @@ export default function Details() {
           <button onClick={() => setEdit(false)}>Cancel</button>
         </>
       )}
-
-      <p>
-        <Link to={isLoggedIn ? "/myinventory" : "/guest"}>Back</Link>
-      </p>
     </div>
   );
 }
