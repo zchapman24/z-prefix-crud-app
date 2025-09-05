@@ -17,7 +17,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); //idk if i need this or not
     try {
       const res = await fetch("http://localhost:8080/users/login", {
         method: "POST",
@@ -84,7 +84,7 @@ export default function Login() {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(error) => setPassword(error.target.value)}
           required
         />
         <button type="submit">Log In</button>
